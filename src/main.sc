@@ -27,11 +27,19 @@ theme: /
             script: 
              $temp.phone = $parseTree._phone
             a: {{$parseTree._phone}}
+            go!: PhoneNumberConfirmation
             
             state: PhoneNumberConfirmation
                 a: Это ваш номер {{$temp.phone}}, верно? 
-        
-        state: 
+            if: {{$request.query}} = "да"
+                script: $session.probablyPhone = $temp.phone
+                go: /NumberConfirmed
+            else: 
+                go: /RecievePhoneNumber
+                
+                
+        state: NumberConfirmed
+            a: ура, подтвердили номер! 
             
             
         state: CatchAll
