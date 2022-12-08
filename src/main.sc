@@ -26,6 +26,7 @@ theme: /
             q!: $phone
             script: 
              $temp.phone = $parseTree._phone
+             $session.probablyPhone = $temp.phone
             a: {{$parseTree._phone}}
     
     # state: Number
