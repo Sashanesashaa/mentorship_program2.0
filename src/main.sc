@@ -26,13 +26,12 @@ theme: /
             q!: $phone
             script: 
              $temp.phone = $parseTree._phone
-             $session.probablyPhone = $temp.phone
             a: {{$parseTree._phone}}
-    
-    # state: Number
-    #      q: $phone 
-    #      script: 
-    #          $temp.phone = $parseTree._phone
+            
+            state: PhoneNumberConfirmation
+                a: Это ваш номер {{$temp.phone}}, верно? 
+        
+        state: 
             
             
         state: CatchAll
