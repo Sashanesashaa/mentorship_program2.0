@@ -10,6 +10,10 @@ init:
 
 require: patterns.sc
 require: functions.js
+require: discount.yaml
+         var = discountInfo
+require: dictionary.csv
+require: zb-common
          
 theme: /
 
@@ -28,11 +32,10 @@ theme: /
                  })
             
             state: Agreement
-                q: (да/давай/ок/хорошо)
+                q: * (да/давай*/хорошо) *
             if: $client.phone
                 go: /NumberWasConfirmedAlready
             else: 
-                a: Укажите ваш номер, пожалуйста. 
                 go: /PhoneAsk
                 
             state: Rejection 
@@ -40,22 +43,29 @@ theme: /
                 a: А что тогда делать?
         
         state: PhoneAsk
-            q!: $phone
-            script: 
-             $temp.phone = $parseTree._phone
+            a: Для продолжения напишите, пожалуйста, мне ваш номер в формате 79000000000. 
             go!: PhoneNumberConfirmation
             
             state: PhoneNumberConfirmation
+                q: $phone
+                go!: Confirm
+            
+            state: Confirm
+                script: 
+                     $temp.phone = $parseTree._phone
                 a: Это ваш номер {{$parseTree._phone}}, верно? 
-                script:  $session.probablyPhone = $temp.phone
-                go: NumberConfirmed
+                script:  
+                    $session.probablyPhone = $temp.phone
+                buttons:
+                    "Yes"
+                    "No"
                 
                 state: NumberConfirmed 
-                    q: да
+                    q: Yes
                     a: ура, подтвердили номер! 
                     
                 state: PhoneNumberNonConfirmed
-                    q!: нет
+                    q!: No
                     a: Тогда давайте ещё раз. 
                     go!: /PhoneAsk
             
@@ -107,7 +117,16 @@ theme: /
                 "1 option"
                 "2 option"
         
-        
+        state: Inform
+            script:
+             var todayDayOfWeek = $jsapi.dateForZone("Europe/Moscow", "EEEE");
+             var discount = discountInfo [todayDayOfWeek];
+             if (discount) {
+              var todayDate = $jsapi.dateForZone("Europe/Moscow", "dd.MM");
+              var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
+              $reactions.answer(answerText);
+              $reactions.anser(discount);
+             }
     
 # theme: /Discount
 #     state: 
