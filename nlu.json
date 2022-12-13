@@ -11,7 +11,77 @@
     "timezone" : "UTC",
     "shared" : false
   },
-  "intents" : [ ],
+  "intents" : [ {
+    "path" : "/оплата_билетов",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "могу ли я заплатить картой за выбранный билет "
+    }, {
+      "text" : "когда мне нужно будет оплатить купленный билет "
+    }, {
+      "text" : "сайт принимает оплату за билеты "
+    }, {
+      "text" : "оплатить билеты "
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/телефон",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "телефон компании "
+    }, {
+      "text" : "хочу позвонить в вашу компанию по какому номеру я могу это сделать "
+    }, {
+      "text" : "пока кому телефону можно дозвониться до представителя компании "
+    }, {
+      "text" : "какой у вас номер телефона "
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/адрес",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "где находится ваша фирма "
+    }, {
+      "text" : "скажите по какому адресу находится офис "
+    }, {
+      "text" : "фактический адрес компании "
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/оплата_подписки",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "сколько стоит подписка "
+    }, {
+      "text" : "оплатить сервис за следующий месяц "
+    }, {
+      "text" : "внести ежемесячный платеж "
+    }, {
+      "text" : "оплата подписки "
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  } ],
   "entities" : [ ],
   "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
   "spellerDictionary" : [ ],
