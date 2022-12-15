@@ -151,19 +151,17 @@ theme: /Discount
         go!: /City/Departure 
 
 
-theme: /City
+# theme: /City
     
-    state: Departure
-        a: Which city are you coming from?
+#     state: Departure
+#         a: Из какого города отправляетесь?
         
-        state: GetCity
-            q: * $City * 
-            script: 
-              log('\n parseTree.City: \n' + toPrettyString($parseTree.City) + '\n'); 
+#         state: GetCity
+#             q: * $City * 
+#             script: 
+#               log('\n parseTree.City: \n' + toPrettyString($parseTree.City) + '\n'); 
         
-        state: LocalCatchAll
-            event: noMatch
-            random:
-                a: Я не понял, попоробуй сказать по-другому
-                a: Ой, что-то на непонятном 
-            go!: {{ $session.lastState }}
+#         state: LocalCatchAll
+#           q: * || fromState = /City 
+#           a: Простите, я вас не поняла. 
+#           go!: {{ $session.lastState }} 
