@@ -147,9 +147,8 @@ theme: /Discount
               var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
               $reactions.answer(answerText);
               $reactions.anser(discount);
-              
-        go!: /City/Departure 
-
+             }
+        go!: /City/Departure
 
 theme: /City
     
