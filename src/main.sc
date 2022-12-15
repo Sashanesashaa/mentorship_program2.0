@@ -18,9 +18,9 @@ require: slotfilling/slotFilling.sc
     module = sys.zb-common
     
 require: city/cities-ru.csv 
-module = sys.zb-common 
-name = Cities 
-var = $Cities 
+   module = sys.zb-common 
+   name = Cities 
+   var = $Cities 
 
 
          
@@ -83,7 +83,7 @@ theme: /
             q: да
             a: Номер уже подтвержден. 
             script: $client.phone = $session.probablyPhone
-            # go!: /info
+            go!: /Discount/Info
             
             
         state: CatchAll
@@ -126,8 +126,20 @@ theme: /
                 "1 option"
                 "2 option"
         
-        state: Inform
-            script:
+        # state: Inform
+        #     script:
+        #      var todayDayOfWeek = $jsapi.dateForZone("Europe/Moscow", "EEEE");
+        #      var discount = discountInfo [todayDayOfWeek];
+        #      if (discount) {
+        #       var todayDate = $jsapi.dateForZone("Europe/Moscow", "dd.MM");
+        #       var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
+        #       $reactions.answer(answerText);
+        #       $reactions.anser(discount);
+        #      }
+    
+theme: /Discount
+    state: Info
+        script: 
              var todayDayOfWeek = $jsapi.dateForZone("Europe/Moscow", "EEEE");
              var discount = discountInfo [todayDayOfWeek];
              if (discount) {
@@ -135,16 +147,7 @@ theme: /
               var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
               $reactions.answer(answerText);
               $reactions.anser(discount);
-             }
-    
-theme: /Discount
-    state: 
-        script: 
-                 var currentDate = $jsapi.dateForZone("Europe/Moscow", "dd.MM");
-                 var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
-                 var discount = "Купите билет сегодня и получите скидку в 10% на следующую покупку!"; 
-                 $reactions.answer(answerText)
-                 $reactions.answer(discount)
+              
         go!: /City/Departure 
 
 
@@ -155,4 +158,12 @@ theme: /City
         
         state: GetCity
             q: * $City * 
-            
+            script: 
+              log('\n parseTree.City: \n' + toPrettyString($parseTree.City) + '\n'); 
+        
+        state: LocalCatchAll
+            event: noMatch
+            random:
+                a: Я не понял, попоробуй сказать по-другому
+                a: Ой, что-то на непонятном 
+            go!: {{ $session.lastState }}
