@@ -17,10 +17,12 @@ require: discount.yaml
 require: slotfilling/slotFilling.sc
     module = sys.zb-common
     
-# require: city/cities-ru.csv 
-# module = sys.zb-common 
-# name = Cities 
-# var = $Cities 
+require: city/cities-ru.csv 
+module = sys.zb-common 
+name = Cities 
+var = $Cities 
+
+
          
 theme: /
 
@@ -135,12 +137,22 @@ theme: /
               $reactions.anser(discount);
              }
     
-# theme: /Discount
-#     state: 
-#         script: 
-#                  var currentDate = $jsapi.dateForZone("Europe/Moscow", "dd.MM");
-#                  var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
-#                  var discount = "Купите билет сегодня и получите скидку в 10% на следующую покупку!"; 
-#                  $reactions.answer(answerText)
-#                  $reactions.answer(discount)
+theme: /Discount
+    state: 
+        script: 
+                 var currentDate = $jsapi.dateForZone("Europe/Moscow", "dd.MM");
+                 var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
+                 var discount = "Купите билет сегодня и получите скидку в 10% на следующую покупку!"; 
+                 $reactions.answer(answerText)
+                 $reactions.answer(discount)
+        go!: /City/Departure 
+
+
+theme: /City
+    
+    state: Departure
+        a: Which city are you coming from?
+        
+        state: GetCity
+            q: * $City * 
             
