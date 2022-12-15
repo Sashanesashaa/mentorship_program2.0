@@ -12,8 +12,15 @@ require: patterns.sc
 require: functions.js
 require: discount.yaml
          var = discountInfo
-require: dictionary.csv
-require: zb-common
+# require: dictionary.csv
+
+require: slotfilling/slotFilling.sc
+    module = sys.zb-common
+    
+# require: city/cities-ru.csv 
+# module = sys.zb-common 
+# name = Cities 
+# var = $Cities 
          
 theme: /
 
