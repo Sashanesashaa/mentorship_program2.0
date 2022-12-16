@@ -22,7 +22,10 @@ require: city/cities-ru.csv
    name = Cities 
    var = $Cities 
 
-
+patterns: 
+    # $City = $entity<Cities> || converter = function(parseTree) {var id = parseTree.City[0].Cities[0].value; return $Cities[id].value;};
+    $City = $entity<Cities> || converter = function(parseTree) {var id = parseTree.Cities[0].value; return $Cities[id].value;}; 
+    # $City = $entity<Cities> || converter = function(parseTree) {var id = parseTree._Cities; return $Cities[id].value;};
          
 theme: /
 
@@ -139,28 +142,41 @@ theme: /
     
 theme: /Discount
     state: Info
+        q!: инфо
         script: 
              var todayDayOfWeek = $jsapi.dateForZone("Europe/Moscow", "EEEE");
              var discount = discountInfo [todayDayOfWeek];
              if (discount) {
               var todayDate = $jsapi.dateForZone("Europe/Moscow", "dd.MM");
-              var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + nowDate + ") действует акция!"; 
+              var answerText = "Хочу отметить, что вам крупно повезло! Сегодня (" + todayDayOfWeek + ") действует акция!"; 
               $reactions.answer(answerText);
-              $reactions.anser(discount);
+              $reactions.answer(discount);
              }
         go!: /City/Departure
 
 theme: /City
     
     state: Departure
-        a: Из какого города отправляетесь?
+        a: Из какого города отчаливаете?
         
         state: GetCity
-            q: * $City * 
+            q!: * $City * 
             script: 
-              log('\n parseTree.City: \n' + toPrettyString($parseTree.City) + '\n'); 
-        
-        state: LocalCatchAll
-          q: * || fromState = /City 
-          a: Простите, я вас не поняла. 
-          go!: {{ $session.lastState }} 
+             $session.departureCity = $parseTree._City; 
+            #   log("PARSE TREE" + toPrettyString($parseTree))
+            a: Итак, город отправления: {{ $session.departureCity.name }}. 
+            go!: ./Arrival
+            
+            state: Arrival 
+                a: Назовите город прибытия 
+                state: Get
+                    q!: * $City * 
+                    script: 
+                     $session.arrivalCity = $parseTree._City; 
+                    a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
+            
+
+    state: LocalCatchAll
+        q: * || fromState = /City 
+        a: Простите, я вас не поняла. 
+        go!: {{ $session.lastState }} 
