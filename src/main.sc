@@ -174,7 +174,11 @@ theme: /City
                     script: 
                      $session.arrivalCity = $parseTree._City; 
                     a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
-            
+    
+    state: Direction
+        intent!: /direction
+        a: Итак, вы хотите купить билет! {{$parseTree}}
+        script: {{$parseTree}}
 
     state: LocalCatchAll
         q: * || fromState = /City 
