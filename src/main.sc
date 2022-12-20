@@ -160,7 +160,7 @@ theme: /City
         a: Из какого города отчаливаете?
         
         state: GetCity
-            q!: * $City * 
+            q: * $City * 
             script: 
              $session.departureCity = $parseTree._City; 
             #   log("PARSE TREE" + toPrettyString($parseTree))
@@ -170,7 +170,7 @@ theme: /City
             state: Arrival 
                 a: Назовите город прибытия 
                 state: Get
-                    q!: * $City * 
+                    q: * $City * 
                     script: 
                      $session.arrivalCity = $parseTree._City; 
                     a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
@@ -178,7 +178,8 @@ theme: /City
     state: Direction
         intent!: /direction
         a: Итак, вы хотите купить билет! {{$parseTree}}
-        script: {{$parseTree}}
+        script: 
+          log("PARSE TREE" + toPrettyString($parseTree))
 
     state: LocalCatchAll
         q: * || fromState = /City 
