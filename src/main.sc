@@ -156,30 +156,36 @@ theme: /Discount
 
 theme: /City
     
-    state: Departure
-        a: Из какого города отчаливаете?
+    # state: Departure
+    #     a: Из какого города отчаливаете?
         
-        state: GetCity
-            q: * $City * 
-            script: 
-             $session.departureCity = $parseTree._City; 
-            #   log("PARSE TREE" + toPrettyString($parseTree))
-            a: Итак, город отправления: {{ $session.departureCity.name }}. 
-            go!: ./Arrival
+    #     state: GetCity
+    #         q: * $City * 
+    #         script: 
+    #          $session.departureCity = $parseTree._City; 
+    #         #   log("PARSE TREE" + toPrettyString($parseTree))
+    #         a: Итак, город отправления: {{ $session.departureCity.name }}. 
+    #         go!: ./Arrival
             
-            state: Arrival 
-                a: Назовите город прибытия 
-                state: Get
-                    q: * $City * 
-                    script: 
-                     $session.arrivalCity = $parseTree._City; 
-                    a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
+    #         state: Arrival 
+    #             a: Назовите город прибытия 
+    #             state: Get
+    #                 q: * $City * 
+    #                 script: 
+    #                  $session.arrivalCity = $parseTree._City; 
+    #                 a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
     
     state: Direction
         intent!: /direction
         a: Итак, вы хотите купить билет! {{$parseTree}}
         script: 
-          log("PARSE TREE" + toPrettyString($parseTree))
+          log("PARSE TREE" + toPrettyString($parseTree));
+          $session.departureCity = $nlp.inflect($parseTree._departure, "nomn") || $parseTree._departure; 
+          $session.arrivalCity = $nlp.inflect($parseTree._destination, "nomn") || $parseTree._destination; 
+          $session.departureCity = capitalize($session.departureCity); 
+          $session.arrivalCity = capitalize($session.arrivalCity); 
+          $session.date = $parseTree._date.year + "/" + $parseTree._date.month + "/" + $parseTree._date.day; 
+          delete $session.arrivalCoordinates; 
 
     state: LocalCatchAll
         q: * || fromState = /City 
