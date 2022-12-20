@@ -177,7 +177,7 @@ theme: /City
     
     state: Direction
         intent!: /direction
-        a: Итак, вы хотите купить билет! {{$parseTree}}
+        # a: Итак, вы хотите купить билет! {{$parseTree}}
         script: 
           log("PARSE TREE" + toPrettyString($parseTree));
           $session.departureCity = $nlp.inflect($parseTree._departure, "nomn") || $parseTree._departure; 
@@ -186,7 +186,8 @@ theme: /City
           $session.arrivalCity = capitalize($session.arrivalCity); 
           $session.date = $parseTree._date.year + "/" + $parseTree._date.month + "/" + $parseTree._date.day; 
           delete $session.arrivalCoordinates; 
-
+        a: {{ $session.date }} отправляемся из города {{ $session.departureCity }} в город {{ $session.arrivalCity }}.
+        
     state: LocalCatchAll
         q: * || fromState = /City 
         a: Простите, я вас не поняла. 
