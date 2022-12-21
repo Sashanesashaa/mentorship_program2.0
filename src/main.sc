@@ -178,12 +178,6 @@ theme: /City
                     a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
                     go!:  /Weather/Current
                     
-theme: /Weather 
-    state: Current
-        script: 
-         $temp.currentWeather = getCurrentWeather($session.arrivalCoordinates.lat, $session.arrivalCoordinates.lon); 
-        if: $temp.currentWeather 
-        a: В городе {{ $session.arrivalCity }} сейчас {{ $temp.currentWeather.description }} {{ $temp.currentWeather.temp }}°C. 
     
     state: Direction
         intent!: /direction
@@ -202,3 +196,10 @@ theme: /Weather
         q: * || fromState = /City 
         a: Простите, я вас не поняла. 
         go!: {{ $session.lastState }} 
+        
+theme: /Weather 
+    state: Current
+        script: 
+         $temp.currentWeather = getCurrentWeather($session.arrivalCoordinates.lat, $session.arrivalCoordinates.lon); 
+        if: $temp.currentWeather 
+        a: В городе {{ $session.arrivalCity }} сейчас {{ $temp.currentWeather.description }} {{ $temp.currentWeather.temp }}°C. 
