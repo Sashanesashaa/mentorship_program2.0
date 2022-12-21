@@ -178,7 +178,7 @@ theme: /City
                     a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
                     go!:  /Weather/Current
                     
-theme: Weather 
+theme: /Weather 
     state: Current
         script: 
          $temp.currentWeather = getCurrentWeather($session.arrivalCoordinates.lat, $session.arrivalCoordinates.lon); 
