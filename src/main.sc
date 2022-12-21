@@ -21,6 +21,8 @@ require: city/cities-ru.csv
    module = sys.zb-common 
    name = Cities 
    var = $Cities 
+   
+require: functions.js
 
 patterns: 
     # $City = $entity<Cities> || converter = function(parseTree) {var id = parseTree.City[0].Cities[0].value; return $Cities[id].value;};
@@ -156,24 +158,32 @@ theme: /Discount
 
 theme: /City
     
-    # state: Departure
-    #     a: Из какого города отчаливаете?
+    state: Departure
+        a: Из какого города отчаливаете?
         
-    #     state: GetCity
-    #         q: * $City * 
-    #         script: 
-    #          $session.departureCity = $parseTree._City; 
-    #         #   log("PARSE TREE" + toPrettyString($parseTree))
-    #         a: Итак, город отправления: {{ $session.departureCity.name }}. 
-    #         go!: ./Arrival
+        state: GetCity
+            q: * $City * 
+            script: 
+             $session.departureCity = $parseTree._City; 
+            #   log("PARSE TREE" + toPrettyString($parseTree))
+            a: Итак, город отправления: {{ $session.departureCity.name }}. 
+            go!: ./Arrival
             
-    #         state: Arrival 
-    #             a: Назовите город прибытия 
-    #             state: Get
-    #                 q: * $City * 
-    #                 script: 
-    #                  $session.arrivalCity = $parseTree._City; 
-    #                 a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
+            state: Arrival 
+                a: Назовите город прибытия 
+                state: Get
+                    q: * $City * 
+                    script: 
+                     $session.arrivalCity = $parseTree._City; 
+                    a: Итак, город прибытия: {{ $session.arrivalCity.name }}. 
+                    go!:  /Weather/Current
+                    
+theme: Weather 
+    state: Current
+        script: 
+         $temp.currentWeather = getCurrentWeather($session.arrivalCoordinates.lat, $session.arrivalCoordinates.lon); 
+        if: $temp.currentWeather 
+        a: В городе {{ $session.arrivalCity }} сейчас {{ $temp.currentWeather.description }} {{ $temp.currentWeather.temp }}°C. 
     
     state: Direction
         intent!: /direction
