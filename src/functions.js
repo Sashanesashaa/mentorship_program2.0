@@ -30,7 +30,7 @@ function getHypothesesForButtons(nBest) {
 
 function getCurrentWeather (lat, lon) {
     var apiKey = $jaicp.context().injector.wetherApiKey;
-    var response = $http.get("http://api.openweathermap.org/data/2.5/weather?APPID=${APPID}&units=${units}&lang=${lang}&lat=${lat}&lon=${lon}"){ 
+    var response = $http.get("http://api.openweathermap.org/data/2.5/weather?APPID=${APPID}&units=${units}&lang=${lang}&lat=${lat}&lon=${lon}"), { 
 
             timeout: 10000, 
             query:{ 
