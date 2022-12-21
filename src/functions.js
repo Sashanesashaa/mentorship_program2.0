@@ -41,7 +41,6 @@ function getCurrentWeather (lat, lon) {
                 lang: "ru", 
                 lat: lat, 
                 lon: lon
-                
             } 
         
     }); 
